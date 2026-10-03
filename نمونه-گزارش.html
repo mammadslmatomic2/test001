@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>گزارش اسکن شبکه</title>
+<style>
+:root {
+  --bg: #0b1020; --panel: #131a2e; --panel2: #182142; --line: #263052;
+  --txt: #e8ecf7; --muted: #9aa6c4; --acc: #4f8cff; --ok: #2ecc71; --warn: #f39c12;
+  --bad: #e74c3c; --chip: #22305a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--txt);
+  font-family: "Vazirmatn", "IRANSans", Tahoma, "Segoe UI", sans-serif; line-height: 1.7; }
+a { color: var(--acc); }
+header { padding: 26px 22px; background: linear-gradient(135deg,#152046,#0e152b); }
+.wrap { max-width: 1400px; margin: 0 auto; padding: 0 18px 60px; }
+h1 { margin: 0 0 6px; font-size: 26px; }
+.sub { color: var(--muted); font-size: 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: 12px; margin: 18px 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.card .k { color: var(--muted); font-size: 12px; }
+.card .v { font-size: 22px; font-weight: 700; margin-top: 4px; }
+table { width: 100%; border-collapse: collapse; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+th, td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--line); font-size: 13.5px; vertical-align: top; }
+th { background: var(--panel2); font-size: 12.5px; color: var(--muted); font-weight: 600; }
+tr:hover td { background: #17203c; }
+.chip { display: inline-block; background: var(--chip); border: 1px solid var(--line); border-radius: 999px;
+  padding: 1px 9px; margin: 1px 2px; font-size: 12px; direction: ltr; }
+.badge { display: inline-block; border-radius: 8px; padding: 1px 8px; font-size: 12px; border: 1px solid var(--line); }
+.b-ok { background: rgba(46,204,113,.15); color: #7ff0b0; }
+.b-warn { background: rgba(243,156,18,.15); color: #ffd18a; }
+.b-bad { background: rgba(231,76,60,.15); color: #ff9b90; }
+.b-info { background: rgba(79,140,255,.15); color: #a9c7ff; }
+details { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; margin: 12px 0; }
+details > summary { cursor: pointer; padding: 12px 16px; font-weight: 700; }
+details .body { padding: 0 16px 16px; }
+.facts td { font-size: 13px; }
+.src { color: var(--muted); font-size: 12px; }
+.note { background: rgba(243,156,18,.09); border: 1px solid rgba(243,156,18,.35);
+  border-radius: 12px; padding: 10px 14px; margin: 10px 0; font-size: 13.5px; }
+.legend { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 12.5px; }
+pre { background: #0a0f1f; border: 1px solid var(--line); border-radius: 12px; padding: 12px; overflow: auto;
+  direction: ltr; text-align: left; font-size: 12px; }
+@media print { body { background: #fff; color: #000; } table, .card, details { border-color: #ccc; } }
+</style>
+</head>
+<body>
+<header><div class="wrap" style="padding:0">
+  <h1>گزارش اسکن شبکه</h1>
+  <div class="sub">گرفته‌شده در 169.254.0.20/30 | رابط: eth0 |
+  آدرس محلی: 169.254.0.21 | دروازه: 169.254.0.22 |
+  مدت: 13.12 ثانیه</div>
+</div></header>
+<div class="wrap">
+  <div class="cards">
+    <div class="card"><div class="k">دستگاه‌های شناسایی‌شده</div><div class="v">2</div></div>
+    <div class="card"><div class="k">دارای MAC</div><div class="v">2</div></div>
+    <div class="card"><div class="k">دارای نام میزبان</div><div class="v">1</div></div>
+    <div class="card"><div class="k">مجموع پورت‌های باز</div><div class="v">1</div></div>
+    <div class="card"><div class="k">آدرس‌های بررسی‌شده</div><div class="v">2</div></div>
+  </div>
+
+  <div class="note">⚠️ دسترسی root در دسترس نیست؛ بنابراین اسکن ARP/ICMP خام انجام نشد. برای کامل‌ترین نتیجه، برنامه را با دسترسی مدیر (root) اجرا کنید. در این حالت از TCP/UDP/ping برای کشف استفاده می‌شود.</div>
+
+  <div class="legend" style="margin:14px 0">
+    <b>راهنمای دقت:</b>
+    <span class="badge b-ok">قطعی</span> خوانده‌شده از خود دستگاه (پاسخ واقعی پروتکل)
+    <span class="badge b-info">ثبت‌شده</span> از پایگاه رسمی/IEEE یا فایل سیستم
+    <span class="badge b-warn">استنتاجی</span> برداشت غیرقطعی — با ذکر دلیل، جداگانه نمایش داده می‌شود
+  </div>
+
+  <table>
+    <thead><tr>
+      <th>#</th><th>آدرس IP</th><th>نام</th><th>MAC</th><th>سازندهٔ کارت شبکه</th>
+      <th>نوع دستگاه</th><th>پورت‌های باز</th><th>تعداد شواهد</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <div id="details"></div>
+
+  <h2 style="margin-top:26px">دادهٔ خام (JSON)</h2>
+  <details><summary>نمایش کامل JSON</summary><div class="body"><pre id="raw"></pre></div></details>
+</div>
+<script>
+const DATA = {"scan": {"started": 1791050089.7735572, "finished": 1791050102.8911543, "duration_sec": 13.12, "target": "169.254.0.20/30", "interface": "eth0", "local_ip": "169.254.0.21", "gateway": "169.254.0.22", "hosts_scanned": 2, "cancelled": false, "capabilities": {"root": false, "arp_raw": false, "icmp_raw": false, "tcp_syn_raw": false, "reasons": {"arp": "دسترسی به سوکت خام ARP ممکن نیست ([Errno 1] Operation not permitted)", "icmp": "دسترسی به سوکت خام ICMP ممکن نیست ([Errno 1] Operation not permitted)", "tcp_syn": "دسترسی به سوکت خام TCP ممکن نیست ([Errno 1] Operation not permitted)"}}, "options": {"target": "169.254.0.20/30", "interface": null, "ports": "quick", "mode": "auto", "snmp": true, "snmp_community": "public", "tcp_timeout": 0.7, "udp_timeout": 0.5, "workers": 256, "host_workers": 16, "port_workers": 512, "max_hosts": 4096, "mdns_timeout": 2.0}, "stats": {"hosts_tested": 2, "devices_found": 2, "open_tcp_ports": 0, "open_udp_ports": 0, "probes_blocked": 0, "name_resolutions": 0}, "oui": {"entries": 399, "sources": ["واژه‌نامهٔ داخلی برنامه (oui_data.py)"], "fallback_only": true}}, "devices": [{"ip": "169.254.0.21", "status": "online", "alive_basis": "پاسخ ICMP port-unreachable: میزبان زنده است (پورت UDP بسته)", "is_gateway": false, "is_self": true, "mac": "02:fc:00:00:00:05", "mac_source": "رابط شبکهٔ همین دستگاه (کارت شبکهٔ محلی)", "first_seen": 1791050090.5058892, "last_seen": 1791050091.0102038, "rtt_ms": 0.06, "open_tcp_ports": [{"port": 22, "service": "SSH", "source": "اتصال کامل TCP برقرار شد (شاهد قطعی)"}], "services": [], "evidence": [{"method": "tcp_connect", "detail": "اتصال کامل TCP برقرار شد (شاهد قطعی)"}, {"method": "udp", "detail": "پاسخ ICMP port-unreachable: میزبان زنده است (پورت UDP بسته)"}], "evidence_count": 2, "facts": [{"key": "آدرس MAC", "value": "02:fc:00:00:00:05", "source": "رابط شبکهٔ همین دستگاه (کارت شبکهٔ محلی)", "certain": true}, {"key": "نام میزبان (DNS معکوس)", "value": "e2b.local", "source": "پرس‌وجوی PTR از سرور DNS شبکه", "certain": true}, {"key": "پورت‌های باز TCP", "value": "22 (SSH)", "source": "اتصال TCP موفق (شاهد قطعی)", "certain": true}, {"key": "نوع دستگاه", "value": "همین دستگاه (اسکنر)", "source": "رابط شبکهٔ محلی همین برنامه", "certain": true}], "aliases": [{"name": "e2b.local", "source": "DNS معکوس"}], "inferences": [{"claim": "به احتمال زیاد دستگاه لینوکسی/توکار", "basis": "فقط SSH باز است"}, {"claim": "MAC تصادفی (Randomized) — سازنده از ثبت IEEE قابل تشخیص نیست", "basis": "بیت Locally Administered در MAC روشن است"}], "notes": ["بیت «محلی‌مدیریت‌شده» در MAC روشن است؛ این آدرس یا توسط خود دستگاه تصادفی ساخته شده (Randomized MAC) یا ویرایش دستی است — پس سازنده در ثبت IEEE نیست."], "raw": {"reverse_dns": "e2b.local"}, "mac_vendor": null, "mac_vendor_source": null, "mac_vendor_certain": true, "mac_is_random": true, "is_virtual_machine": false, "name": "e2b.local", "all_names": ["e2b.local"], "device_type": "همین دستگاه (اسکنر)", "device_type_source": "رابط شبکهٔ محلی همین برنامه", "device_type_certain": true}, {"ip": "169.254.0.22", "status": "online", "alive_basis": "ورودی جدول ARP هستهٔ سیستم‌عامل با وضعیت REACHABLE — نشان می‌دهد این دستگاه تازه با این سیستم تبادل داشته است (شاهد سطح ۲)", "is_gateway": true, "is_self": false, "mac": "02:fc:00:00:00:06", "mac_source": "ورودی جدول ARP هستهٔ سیستم‌عامل با وضعیت REACHABLE — نشان می‌دهد این دستگاه تازه با این سیستم تبادل داشته است (شاهد سطح ۲)", "first_seen": 1791050089.7898693, "last_seen": 1791050089.7898722, "rtt_ms": null, "open_tcp_ports": [], "services": [], "evidence": [{"method": "arp_table", "detail": "ورودی جدول ARP هستهٔ سیستم‌عامل با وضعیت REACHABLE — نشان می‌دهد این دستگاه تازه با این سیستم تبادل داشته است (شاهد سطح ۲)"}], "evidence_count": 1, "facts": [{"key": "آدرس MAC", "value": "02:fc:00:00:00:06", "source": "ورودی جدول ARP هستهٔ سیستم‌عامل با وضعیت REACHABLE — نشان می‌دهد این دستگاه تازه با این سیستم تبادل داشته است (شاهد سطح ۲)", "certain": true}, {"key": "نوع دستگاه", "value": "دروازهٔ شبکه / روتر", "source": "آدرس پیش‌فرض مسیریابی همین سیستم است", "certain": true}], "aliases": [], "inferences": [{"claim": "MAC تصادفی (Randomized) — سازنده از ثبت IEEE قابل تشخیص نیست", "basis": "بیت Locally Administered در MAC روشن است"}], "notes": ["بیت «محلی‌مدیریت‌شده» در MAC روشن است؛ این آدرس یا توسط خود دستگاه تصادفی ساخته شده (Randomized MAC) یا ویرایش دستی است — پس سازنده در ثبت IEEE نیست."], "raw": {}, "mac_vendor": null, "mac_vendor_source": null, "mac_vendor_certain": true, "mac_is_random": true, "is_virtual_machine": false, "name": null, "all_names": [], "device_type": "دروازهٔ شبکه / روتر", "device_type_source": "آدرس پیش‌فرض مسیریابی همین سیستم است", "device_type_certain": true}], "summary": {"devices_online": 2, "with_mac": 2, "with_hostname": 1, "open_ports_total": 1, "device_types": {"همین دستگاه (اسکنر)": 1, "دروازهٔ شبکه / روتر": 1}}, "warnings": ["دسترسی root در دسترس نیست؛ بنابراین اسکن ARP/ICMP خام انجام نشد. برای کامل‌ترین نتیجه، برنامه را با دسترسی مدیر (root) اجرا کنید. در این حالت از TCP/UDP/ping برای کشف استفاده می‌شود."]};
+const esc = s => (s===null||s===undefined) ? '' : String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rows = document.getElementById('rows');
+const details = document.getElementById('details');
+const STATUS = {online:['b-ok','آنلاین'], dhcp_only:['b-warn','شناسایی از DHCP'], unknown:['b-info','نامعلوم']};
+
+DATA.devices.forEach((d,i) => {
+  const [cls,label] = STATUS[d.status] || ['b-info', d.status];
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${i+1}</td>
+    <td><b dir="ltr">${esc(d.ip)}</b> ${d.is_gateway?'<span class="badge b-info">دروازه</span>':''} ${d.is_self?'<span class="badge b-info">همین دستگاه</span>':''}</td>
+    <td>${esc(d.name) || '<span class="src">—</span>'}</td>
+    <td dir="ltr">${esc(d.mac) || '<span class="src">در دسترس نیست</span>'}</td>
+    <td>${esc(d.mac_vendor) || '<span class="src">نامشخص</span>'} ${d.mac_is_random?'<span class="badge b-warn">MAC تصادفی</span>':''}</td>
+    <td>${esc(d.device_type) || '<span class="src">نامشخص</span>'}
+        ${d.device_type && !d.device_type_certain ? '<span class="badge b-warn">استنتاجی</span>' : (d.device_type ? '<span class="badge b-ok">مبتنی بر شاهد</span>' : '')}</td>
+    <td>${(d.open_tcp_ports||[]).slice(0,12).map(p=>`<span class="chip">${p.port}${p.service?' · '+esc(p.service):''}</span>`).join(' ')}
+        ${(d.open_tcp_ports||[]).length>12?`<span class="src"> و ${d.open_tcp_ports.length-12} پورت دیگر</span>`:''}</td>
+    <td>${d.evidence_count} <span class="badge ${cls}">${label}</span></td>`;
+  rows.appendChild(tr);
+
+  const facts = (d.facts||[]).map(f => `<tr>
+      <td>${esc(f.key)}</td><td>${esc(f.value)}</td>
+      <td class="src">${esc(f.source)}</td>
+      <td>${f.certain ? '<span class="badge b-ok">قطعی</span>' : '<span class="badge b-warn">غیرقطعی/استنتاجی</span>'}</td></tr>`).join('');
+  const ev = (d.evidence||[]).map(e => `<li>${esc(e.detail)}</li>`).join('');
+  const inf = (d.inferences||[]).map(x => `<li><b>${esc(x.claim)}</b> — <span class="src">دلیل: ${esc(x.basis)}</span></li>`).join('');
+  const notes = (d.notes||[]).map(n => `<div class="note">ℹ️ ${esc(n)}</div>`).join('');
+  const det = document.createElement('details');
+  det.innerHTML = `<summary>دستگاه <span dir="ltr">${esc(d.ip)}</span>${d.name?' — '+esc(d.name):''} — ${esc(d.device_type||'نوع نامشخص')} (${d.evidence_count} شاهد)</summary>
+    <div class="body">
+      ${notes}
+      <h4>شواهد زنده‌بودن</h4><ul>${ev || '<li class="src">—</li>'}</ul>
+      ${inf ? `<h4>استنتاج‌های غیرقطعی (جدا از واقعیت‌ها)</h4><ul>${inf}</ul>` : ''}
+      <h4>جدول اطلاعات و منبع هر مورد</h4>
+      <table class="facts"><thead><tr><th>موضوع</th><th>مقدار</th><th>منبع</th><th>اعتبار</th></tr></thead>
+      <tbody>${facts || '<tr><td colspan="4" class="src">اطلاعات تکمیلی‌ای ثبت نشد</td></tr>'}</tbody></table>
+      <h4>دادهٔ خام این دستگاه</h4>
+      <pre>${esc(JSON.stringify(d.raw, null, 2))}</pre>
+    </div>`;
+  details.appendChild(det);
+});
+document.getElementById('raw').textContent = JSON.stringify(DATA, null, 2);
+</script>
+</body>
+</html>

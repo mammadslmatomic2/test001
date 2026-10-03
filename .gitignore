@@ -1,0 +1,14 @@
+# خروجی‌های اجرا
+__pycache__/
+*.pyc
+data/oui.csv          # فهرست IEEE (با --update-oui دانلود می‌شود، حجم زیاد)
+netscan-report*.html
+result*.json
+*.csv
+!sample-report.html
+
+# فایل‌های سیستمی
+.DS_Store
+Thumbs.db
+.venv/
+venv/
