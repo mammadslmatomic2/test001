@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اسکنر شبکهٔ داخلی — گزارش دقیق دستگاه‌ها</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="logo">📡</div>
+    <div>
+      <h1>اسکنر شبکهٔ داخلی</h1>
+      <div class="sub">کشف دستگاه‌ها با شواهد واقعی — بدون حدس و تخمین</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="pillrow" id="capPills"></div>
+  </header>
+
+  <div class="grid cols-2">
+    <!-- ------------------------------ کنترل اسکن ------------------------------ -->
+    <section class="card">
+      <h2>۱) تنظیم و اجرای اسکن</h2>
+      <div class="row">
+        <div style="grid-column: span 2; min-width: 240px;">
+          <label for="target">گسترهٔ هدف (CIDR / IP / بازهٔ آدرس)</label>
+          <input type="text" id="target" list="targets" placeholder="مثلاً 192.168.1.0/24 یا all" dir="ltr">
+          <datalist id="targets"></datalist>
+          <div class="muted tiny" id="targetHint"></div>
+        </div>
+        <div>
+          <label for="iface">رابط شبکه</label>
+          <select id="iface"></select>
+        </div>
+      </div>
+
+      <details id="adv">
+        <summary>تنظیمات پیشرفته</summary>
+        <div class="dbody">
+          <div class="row">
+            <div>
+              <label for="ports">میزان اسکن پورت</label>
+              <select id="ports">
+                <option value="quick">سریع — ۱۰ پورت کلیدی</option>
+                <option value="common" selected>متعارف — ۱۵۰ پورت رایج</option>
+                <option value="full">کامل — ۱۰۰۰۰ پورت</option>
+                <option value="all">تمام ۶۵۵۳۵ پورت (کند)</option>
+              </select>
+            </div>
+            <div>
+              <label for="mode">حالت کشف</label>
+              <select id="mode">
+                <option value="auto" selected>خودکار — همهٔ لایه‌ها</option>
+                <option value="fast">سریع — فقط لایه‌های سریع</option>
+              </select>
+            </div>
+            <div>
+              <label for="tcpTimeout">مهلت اتصال (ثانیه)</label>
+              <input type="number" id="tcpTimeout" value="0.7" step="0.1" min="0.1" max="5">
+            </div>
+            <div>
+              <label for="workers">هم‌زمانی (کارها)</label>
+              <input type="number" id="workers" value="256" min="16" max="1024">
+            </div>
+            <div>
+              <label for="hostWorkers">کاوش هم‌زمان میزبان‌ها</label>
+              <input type="number" id="hostWorkers" value="16" min="1" max="64">
+            </div>
+            <div>
+              <label for="maxHosts">حداکثر آدرس‌ها</label>
+              <input type="number" id="maxHosts" value="4096" min="1" max="65536">
+            </div>
+            <div>
+              <label for="extraPorts">پورت‌های اضافی (با کاما یا بازه)</label>
+              <input type="text" id="extraPorts" placeholder="8080,9000-9010" dir="ltr">
+            </div>
+            <div>
+              <label for="snmpCommunity">رشتهٔ SNMP community</label>
+              <input type="text" id="snmpCommunity" value="public" dir="ltr">
+            </div>
+            <div>
+              <label>کاوش SNMP</label>
+              <select id="snmpOn">
+                <option value="1" selected>فعال (دقیق‌ترین هویت دستگاه)</option>
+                <option value="0">غیرفعال</option>
+              </select>
+            </div>
+          </div>
+          <div class="muted tiny" style="margin-top:8px">
+            نکته: برای فعال‌شدن لایه‌های ARP / ICMP / TCP-SYN (که هیچ دستگاه زنده‌ای را از قلم نمی‌گذارند)
+            برنامه را با دسترسی root اجرا کنید؛ بدون root از TCP/UDP/ping و منابع غیرفعال استفاده می‌شود.
+          </div>
+        </div>
+      </details>
+
+      <div class="btnrow">
+        <button class="primary" id="startBtn">شروع اسکن</button>
+        <button class="danger" id="stopBtn" disabled>توقف</button>
+        <button id="ouiBtn">به‌روزرسانی فهرست IEEE</button>
+      </div>
+
+      <div style="margin-top:14px">
+        <progress id="bar" value="0" max="100"></progress>
+        <div class="phase" id="phaseText">آماده.</div>
+      </div>
+    </section>
+
+    <!-- ------------------------------ وضعیت و آمار ------------------------------ -->
+    <section class="card">
+      <h2>۲) وضعیت اجرا</h2>
+      <div class="cards" id="statCards"></div>
+      <div class="flex" style="margin:10px 0 6px">
+        <button id="jsonBtn" disabled>دانلود JSON</button>
+        <button id="csvBtn" disabled>دانلود CSV</button>
+        <button id="htmlBtn" disabled>گزارش HTML مستقل</button>
+      </div>
+      <div class="log" id="log"></div>
+    </section>
+  </div>
+
+  <!-- ------------------------------ نتایج ------------------------------ -->
+  <section class="card" style="margin-top:14px">
+    <div class="flex" style="justify-content: space-between">
+      <h2 style="margin:0">۳) دستگاه‌های شناسایی‌شده</h2>
+      <div class="legend tiny">
+        <span class="badge ok">قطعی</span> خوانده‌شده از خود دستگاه
+        <span class="badge info">ثبت‌شده</span> منابع رسمی/سیستم
+        <span class="badge warn">استنتاجی</span> غیرقطعی — با ذکر دلیل
+      </div>
+    </div>
+
+    <div class="row" style="margin:12px 0">
+      <div>
+        <label for="q">جست‌وجو (IP، نام، MAC، سازنده، سرویس)</label>
+        <input type="text" id="q" placeholder="مثلاً: 192.168.1 یا Apple یا 445">
+      </div>
+      <div>
+        <label for="statusFilter">وضعیت</label>
+        <select id="statusFilter">
+          <option value="">همه</option>
+          <option value="online">آنلاین (پاسخ مستقیم)</option>
+          <option value="dhcp_only">فقط شناسایی از DHCP</option>
+          <option value="unknown">نامعلوم</option>
+        </select>
+      </div>
+      <div>
+        <label for="typeFilter">نوع دستگاه</label>
+        <select id="typeFilter"><option value="">همه</option></select>
+      </div>
+      <div>
+        <label for="sortBy">ترتیب</label>
+        <select id="sortBy">
+          <option value="ip">آدرس IP</option>
+          <option value="ports">تعداد پورت باز</option>
+          <option value="evidence">تعداد شواهد</option>
+          <option value="name">نام</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:34px">#</th>
+            <th>آدرس IP</th>
+            <th>نام / نام‌های دیگر</th>
+            <th>MAC و سازنده</th>
+            <th>نوع دستگاه</th>
+            <th>پورت‌های باز</th>
+            <th style="width:90px">شواهد</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="empty" id="emptyMsg">هنوز اسکنی اجرا نشده است. گسترهٔ هدف را وارد کنید و «شروع اسکن» را بزنید.</div>
+    </div>
+  </section>
+
+  <!-- ------------------------------ جزئیات دستگاه ------------------------------ -->
+  <section class="card" style="margin-top:14px" id="detailCard">
+    <h2>۴) جزئیات کامل دستگاه</h2>
+    <div id="detail"><div class="empty">برای مشاهدهٔ جزئیات کامل، روی یک ردیف کلیک کنید.</div></div>
+  </section>
+
+  <div class="muted tiny" style="margin-top:14px">
+    این ابزار برای مدیران شبکه طراحی شده و فقط در شبکهٔ خصوصی (10/8، 172.16/12، 192.168/16،
+    169.254/16، 100.64/10) کاوش فعال انجام می‌دهد. هر داده‌ای که نمایش داده می‌شود، منبعش کنار آن نوشته شده است؛
+    موارد غیرقطعی جداگانه و با برچسب «استنتاجی» نشان داده می‌شوند.
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
